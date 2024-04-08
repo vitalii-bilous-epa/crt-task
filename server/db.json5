@@ -1,0 +1,55 @@
+{
+  clients: [
+    {
+      id: "1",
+      name: "Client A",
+    },
+    {
+      id: "2",
+      name: "Client B",
+    },
+    {
+      id: "3",
+      name: "Client C",
+    },
+  ],
+  reports: [
+    {
+      id: "1",
+      name: "Report1",
+      clientId: "1",
+    },
+    {
+      id: "2",
+      name: "Report2",
+      clientId: "1",
+    },
+    {
+      id: "3",
+      name: "Report3",
+      clientId: "2",
+    },
+    {
+      id: "4",
+      name: "Report4",
+      clientId: "1",
+    },
+    {
+      id: "5",
+      name: "Report5",
+      clientId: "2",
+    },
+    {
+      id: "6",
+      name: "Report6",
+      clientId: "3",
+    },
+  ],
+  tasks: [
+    {
+      id: "1",
+      name: "Task 1",
+      reportId: "1",
+    },
+  ],
+}

@@ -1,0 +1,24 @@
+{
+  "clients": [
+    {
+      "id": 1,
+      "name": "Client A",
+      "reports": [
+        "Report1", "Report2"
+      ]
+    }
+  ],
+  "reports": [
+    {
+      "id": 1,
+      "name": "Report1",
+      "tasks": [
+        "task1", "task2"
+      ]
+    }
+  ],
+  "tasks": [{
+    "id": 1,
+    "name": "Task A1"
+  }]
+}
