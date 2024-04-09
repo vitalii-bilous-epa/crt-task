@@ -1,23 +1,17 @@
-// import { AccordeonList } from "./AccordeonList";
 import { useMemo, useState } from "react";
 import { FancyButton } from "./common/FancyButton";
-// import { getDataTree } from "./model";
 import { ClientWrapper } from "./wrappers/ClientWrapper";
 import { useAddClientMutation, useGetClientsQuery } from "./services/serverApi";
 import { generateClient } from "./utils/generators";
 import { Loading } from "./common/Loading";
-
-interface ServerReport {
-  id: string;
-  name: string;
-}
+import { ClientsServerResponse } from "./types";
+import { Error } from "./common/Error";
 
 function App() {
-  // const data = getDataTree();
-  const { data = [], isFetching } = useGetClientsQuery("");
+  const { data = [], isFetching, isError, refetch } = useGetClientsQuery(null);
   const [clientFilter, setClientNameFilter] = useState("");
   const processedData = useMemo(() => {
-    const rawProcessedData = (data as ServerReport[]).map(({ id, name }) => ({
+    const rawProcessedData = (data as ClientsServerResponse[]).map(({ id, name }) => ({
       id,
       title: name,
     }));
@@ -50,26 +44,18 @@ function App() {
         />
       </div>
       <div>
-        <div>
-          {/* Old variNT */}
-          {/* {data.list.map(({ list, title, childType, type }) => {
-            return (
-              <AccordeonList
-                key={title}
-                list={list}
-                type={type}
-                title={title}
-                childType={childType}
-                onAdd={() => {}}
-                onDelete={() => {}}
-              />
-            );
-          })} */}
+        <div className="mb-4">
           {processedData.map(({ id, title }) => (
             <ClientWrapper id={id} title={title} />
           ))}
           {isFetching && <Loading />}
         </div>
+        {!isFetching && isError && (
+          <Error
+            text="Something went wrong with clients request"
+            cta={refetch}
+          />
+        )}
       </div>
     </div>
   );

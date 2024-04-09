@@ -5,15 +5,10 @@ import {
   useRemoveClientMutation,
 } from "../services/serverApi";
 import { ReportWrapper } from "./ReportWrapper";
-import { CustomAccordeon } from "../common/CustomAccordeon";
+import { CustomAccordion } from "../common/CustomAccordion";
 import { generateReport } from "../utils/generators";
 import { Loading } from "../common/Loading";
-
-interface ServerReport {
-  id: string;
-  name: string;
-  clientId: string;
-}
+import { ReportServerResponse } from "../types";
 
 export const ClientWrapper = ({ id, title }: { id: string; title: string }) => {
   const [isPereventLoading, setPereventLoading] = useState(true);
@@ -24,14 +19,14 @@ export const ClientWrapper = ({ id, title }: { id: string; title: string }) => {
   const [addReport] = useAddReportMutation();
 
   const processedData = useMemo(() => {
-    return (data as ServerReport[]).map(({ id, name }) => ({
+    return (data as ReportServerResponse[]).map(({ id, name }) => ({
       id,
       title: name,
     }));
   }, [data]);
 
   return (
-    <CustomAccordeon
+    <CustomAccordion
       title={title}
       childType="report"
       onToogle={(isOpen) => setPereventLoading(!isOpen)}
@@ -42,6 +37,6 @@ export const ClientWrapper = ({ id, title }: { id: string; title: string }) => {
         <ReportWrapper id={id} title={title} />
       ))}
       {isFetching && <Loading />}
-    </CustomAccordeon>
+    </CustomAccordion>
   );
 };

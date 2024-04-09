@@ -1,7 +1,8 @@
 import { Accordion } from "flowbite-react/components/Accordion";
 import { FancyButton } from "./FancyButton";
+import { CloseIcon } from "./CloseIcon";
 
-export interface AccordeonTemplateProps {
+export interface AccordionTemplateProps {
   title: string;
   type: string;
   childType?: string;
@@ -10,23 +11,21 @@ export interface AccordeonTemplateProps {
   onDelete: () => void;
 }
 
-export const AccordeonTemplate = ({
+export const AccordionTemplate = ({
   title,
   childType,
   children,
   onAdd,
   onDelete,
-}: AccordeonTemplateProps) => {
+}: AccordionTemplateProps) => {
   return (
     <Accordion className="mt-3" collapseAll>
       <Accordion.Panel>
         <Accordion.Title>
-          <span className="mr-5 cursor-pointer" onClick={onDelete}>
-            X
-          </span>
+          <CloseIcon onClick={onDelete} />
           {title}
         </Accordion.Title>
-        <Accordion.Content onChange={(...args) => console.log(">>> ", args)}>
+        <Accordion.Content>
           <div className="flex justify-between">
             <span>{title}</span>
             <FancyButton title={`Add ${childType}`} onClick={onAdd} />

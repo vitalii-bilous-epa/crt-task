@@ -4,16 +4,13 @@ import {
   useGetTasksQuery,
   useRemoveReportMutation,
 } from "../services/serverApi";
-import { CustomAccordeon } from "../common/CustomAccordeon";
+import { CustomAccordion } from "../common/CustomAccordion";
 import { generateTask } from "../utils/generators";
 import { TaskWrapper } from "./TaskWrapper";
 import { Loading } from "../common/Loading";
+import { TasksServerResponse } from "../types";
 
-interface ServerReport {
-  id: string;
-  name: string;
-  reportId: string;
-}
+
 
 export const ReportWrapper = ({ id, title }: { id: string; title: string }) => {
   const [isPereventLoading, setPereventLoading] = useState(true);
@@ -24,14 +21,14 @@ export const ReportWrapper = ({ id, title }: { id: string; title: string }) => {
   const [removeReport] = useRemoveReportMutation();
 
   const processedData = useMemo(() => {
-    return (data as ServerReport[]).map(({ id, name }) => ({
+    return (data as TasksServerResponse[]).map(({ id, name }) => ({
       id,
       title: name,
     }));
   }, [data]);
 
   return (
-    <CustomAccordeon
+    <CustomAccordion
       title={title}
       childType="task"
       onToogle={(isOpen) => setPereventLoading(!isOpen)}
@@ -42,6 +39,6 @@ export const ReportWrapper = ({ id, title }: { id: string; title: string }) => {
         <TaskWrapper key={id} id={id} title={title} />
       ))}
       {isFetching && <Loading />}
-    </CustomAccordeon>
+    </CustomAccordion>
   );
 };

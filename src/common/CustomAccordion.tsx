@@ -1,30 +1,29 @@
 import { useEffect, useState } from "react";
 import { FancyButton } from "./FancyButton";
+import { CloseIcon } from "./CloseIcon";
 
-export interface AccordeonTemplateProps {
+export interface AccordionTemplateProps {
   title: string;
-  // type: string;
   childType?: string;
   children: React.ReactNode;
-  onToogle?: (state: boolean) => void
+  onToogle?: (state: boolean) => void;
   onAddNewChild: () => void;
   onDelete: () => void;
 }
 
-export const CustomAccordeon = ({
+export const CustomAccordion = ({
   title,
   childType,
   onToogle,
-  onAddNewChild: onAdd,
+  onAddNewChild,
   onDelete,
   children,
-}: AccordeonTemplateProps) => {
+}: AccordionTemplateProps) => {
   const [isActive, setIsActive] = useState(false);
 
-
   useEffect(() => {
-    onToogle && onToogle(isActive)
-  }, [isActive, onToogle])
+    onToogle && onToogle(isActive);
+  }, [isActive, onToogle]);
 
   const onTitleClick = () => {
     setIsActive(!isActive);
@@ -36,9 +35,13 @@ export const CustomAccordeon = ({
         className="w-full bg-gray-100 p-4 flex justify-between"
         onClick={onTitleClick}
       >
-        <span className="mr-5 cursor-pointer" onClick={onDelete}>
-          X
-        </span>
+        <CloseIcon
+          onClick={(e) => {
+            e.stopPropagation();
+
+            onDelete();
+          }}
+        />
         {title}
         <span
           className={`inline-block cursor-pointer ${isActive && "rotate-180"}`}
@@ -50,7 +53,7 @@ export const CustomAccordeon = ({
         <div className="p-4">
           <div className="flex justify-between">
             <span>{title}</span>
-            <FancyButton title={`Add ${childType}`} onClick={onAdd} />
+            <FancyButton title={`Add ${childType}`} onClick={onAddNewChild} />
           </div>
           {children}
         </div>

@@ -28,7 +28,9 @@ export const jsonServerApi = createApi({
     // Report
     getReports: builder.query({
       query: (clientId: string) => `reports?clientId=${clientId}`,
-      providesTags: ["Reports"],
+      providesTags: (result, error, arg) => {
+        return [{ type: "Reports", id: arg }];
+      },
     }),
     addReport: builder.mutation({
       query: ({ name, clientId }) => ({
@@ -36,7 +38,9 @@ export const jsonServerApi = createApi({
         method: "POST",
         body: { name, clientId },
       }),
-      invalidatesTags: ["Reports"],
+      invalidatesTags: (result, error, args) => {
+        return [{ type: "Reports", id: args.clientId }];
+      },
     }),
     removeReport: builder.mutation({
       query: (id) => ({
@@ -48,7 +52,9 @@ export const jsonServerApi = createApi({
     // Tasks
     getTasks: builder.query({
       query: (reportId: string) => `tasks?reportId=${reportId}`,
-      providesTags: ["Tasks"],
+      providesTags: (result, error, arg) => {
+        return [{ type: "Tasks", id: arg }];
+      },
     }),
     addTask: builder.mutation({
       query: ({ name, reportId }) => ({
@@ -56,7 +62,9 @@ export const jsonServerApi = createApi({
         method: "POST",
         body: { name, reportId },
       }),
-      invalidatesTags: ["Tasks"],
+      invalidatesTags: (result, error, args) => {
+        return [{ type: "Tasks", id: args.reportId }];
+      },
     }),
     removeTask: builder.mutation({
       query: (id) => ({

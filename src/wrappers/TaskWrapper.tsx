@@ -1,17 +1,12 @@
 import { useRemoveTaskMutation } from "../services/serverApi";
+import { CloseIcon } from "../common/CloseIcon";
 
 export const TaskWrapper = ({ id, title }: { id: string; title: string }) => {
-  const [removetask, {isLoading}] = useRemoveTaskMutation();
+  const [removetask, { isLoading }] = useRemoveTaskMutation({});
 
   return (
-    <div className={`${isLoading && "opacity-65"}`}>
-      {title}{" "}
-      <span
-        className="cursor-pointer px-2 rounded-lg bg-red-100"
-        onClick={() => removetask(id)}
-      >
-        x
-      </span>
+    <div className={`flex ${isLoading && "opacity-65"}`}>
+      {title} <CloseIcon onClick={() => removetask(id)} />
     </div>
   );
 };

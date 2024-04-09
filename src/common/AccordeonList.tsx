@@ -1,5 +1,5 @@
 import { Accordion } from "flowbite-react/components/Accordion";
-import { FancyButton } from "./common/FancyButton";
+import { FancyButton } from "./FancyButton";
 
 export interface AccordeonListProps {
   title: string;
