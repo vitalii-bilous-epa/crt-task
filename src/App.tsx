@@ -1,5 +1,5 @@
 // import { AccordeonList } from "./AccordeonList";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { FancyButton } from "./common/FancyButton";
 // import { getDataTree } from "./model";
 import { ClientWrapper } from "./wrappers/ClientWrapper";
@@ -14,12 +14,21 @@ interface ServerReport {
 function App() {
   // const data = getDataTree();
   const { data = [] } = useGetClientsQuery("");
+  const [clientFilter, setClientNameFilter] = useState("");
   const processedData = useMemo(() => {
-    return (data as ServerReport[]).map(({ id, name }) => ({
+    const rawProcessedData = (data as ServerReport[]).map(({ id, name }) => ({
       id,
       title: name,
     }));
-  }, [data]);
+
+    return clientFilter === ""
+      ? rawProcessedData
+      : rawProcessedData.filter(
+          ({ title, id }) =>
+            title.toLocaleLowerCase().includes(clientFilter) ||
+            id.toLocaleLowerCase().includes(clientFilter)
+        );
+  }, [data, clientFilter]);
 
   const [createUser] = useAddClientMutation();
 
@@ -28,12 +37,15 @@ function App() {
       <h2 className="font-bold text-center my- text-2xl">Task overview</h2>
       <div className="flex justify-between my-4">
         <FancyButton
-          title="Add new user"
+          title="Add client"
           onClick={() => createUser(generateClient())}
         />
         <input
           type="text"
           className="block rounded-md min-w-24 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          onChange={(e) =>
+            setClientNameFilter(e.target.value.toLocaleLowerCase())
+          }
         />
       </div>
       <div>
