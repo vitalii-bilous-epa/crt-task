@@ -1,6 +1,13 @@
 import { useMemo, useState } from "react";
-import { useGetTasksQuery } from "../services/serverApi";
+import {
+  useAddTaskMutation,
+  useGetTasksQuery,
+  useRemoveReportMutation,
+} from "../services/serverApi";
 import { CustomAccordeon } from "../common/CustomAccordeon";
+import { generateTask } from "../utils/generators";
+import { TaskWrapper } from "./TaskWrapper";
+import { Loading } from "../common/Loading";
 
 interface ServerReport {
   id: string;
@@ -9,11 +16,13 @@ interface ServerReport {
 }
 
 export const ReportWrapper = ({ id, title }: { id: string; title: string }) => {
-  const [isPereventLoading, setPereventLoading] = useState(false);
-
-  const { data = [] } = useGetTasksQuery(id, {
+  const [isPereventLoading, setPereventLoading] = useState(true);
+  const { data = [], isFetching } = useGetTasksQuery(id, {
     skip: isPereventLoading,
   });
+  const [addTask] = useAddTaskMutation();
+  const [removeReport] = useRemoveReportMutation();
+
   const processedData = useMemo(() => {
     return (data as ServerReport[]).map(({ id, name }) => ({
       id,
@@ -26,12 +35,13 @@ export const ReportWrapper = ({ id, title }: { id: string; title: string }) => {
       title={title}
       childType="task"
       onToogle={(isOpen) => setPereventLoading(!isOpen)}
-      onAdd={() => {}}
-      onDelete={() => {}}
+      onAddNewChild={() => addTask({ reportId: id, name: generateTask() })}
+      onDelete={() => removeReport(id)}
     >
       {processedData.map(({ id, title }) => (
-        <p key={id}>{title}</p>
+        <TaskWrapper key={id} id={id} title={title} />
       ))}
+      {isFetching && <Loading />}
     </CustomAccordeon>
   );
 };

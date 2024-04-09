@@ -1,7 +1,13 @@
 import { useMemo, useState } from "react";
-import { useGetReportsQuery, useRemoveClientMutation } from "../services/serverApi";
+import {
+  useAddReportMutation,
+  useGetReportsQuery,
+  useRemoveClientMutation,
+} from "../services/serverApi";
 import { ReportWrapper } from "./ReportWrapper";
 import { CustomAccordeon } from "../common/CustomAccordeon";
+import { generateReport } from "../utils/generators";
+import { Loading } from "../common/Loading";
 
 interface ServerReport {
   id: string;
@@ -10,11 +16,13 @@ interface ServerReport {
 }
 
 export const ClientWrapper = ({ id, title }: { id: string; title: string }) => {
-  const [isPereventLoading, setPereventLoading] = useState(false);
-  const { data = [] } = useGetReportsQuery(id, {
+  const [isPereventLoading, setPereventLoading] = useState(true);
+  const { data = [], isFetching } = useGetReportsQuery(id, {
     skip: isPereventLoading,
   });
-  const [removeUser] = useRemoveClientMutation()
+  const [removeUser] = useRemoveClientMutation();
+  const [addReport] = useAddReportMutation();
+
   const processedData = useMemo(() => {
     return (data as ServerReport[]).map(({ id, name }) => ({
       id,
@@ -27,12 +35,13 @@ export const ClientWrapper = ({ id, title }: { id: string; title: string }) => {
       title={title}
       childType="report"
       onToogle={(isOpen) => setPereventLoading(!isOpen)}
-      onAdd={() => {}}
+      onAddNewChild={() => addReport({ name: generateReport(), clientId: id })}
       onDelete={() => removeUser(id)}
     >
       {processedData.map(({ id, title }) => (
         <ReportWrapper id={id} title={title} />
       ))}
+      {isFetching && <Loading />}
     </CustomAccordeon>
   );
 };

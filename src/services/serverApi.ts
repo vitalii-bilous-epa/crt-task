@@ -3,8 +3,9 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const jsonServerApi = createApi({
   reducerPath: "jsonServerApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/" }),
-  tagTypes: ["Clients"],
+  tagTypes: ["Clients", "Reports", "Tasks"],
   endpoints: (builder) => ({
+    // Clients
     getClients: builder.query({
       query: () => `clients`,
       providesTags: ["Clients"],
@@ -24,19 +25,57 @@ export const jsonServerApi = createApi({
       }),
       invalidatesTags: ["Clients"],
     }),
+    // Report
     getReports: builder.query({
       query: (clientId: string) => `reports?clientId=${clientId}`,
+      providesTags: ["Reports"],
     }),
+    addReport: builder.mutation({
+      query: ({ name, clientId }) => ({
+        url: `reports`,
+        method: "POST",
+        body: { name, clientId },
+      }),
+      invalidatesTags: ["Reports"],
+    }),
+    removeReport: builder.mutation({
+      query: (id) => ({
+        url: `reports/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Reports"],
+    }),
+    // Tasks
     getTasks: builder.query({
       query: (reportId: string) => `tasks?reportId=${reportId}`,
+      providesTags: ["Tasks"],
+    }),
+    addTask: builder.mutation({
+      query: ({ name, reportId }) => ({
+        url: `tasks`,
+        method: "POST",
+        body: { name, reportId },
+      }),
+      invalidatesTags: ["Tasks"],
+    }),
+    removeTask: builder.mutation({
+      query: (id) => ({
+        url: `tasks/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Tasks"],
     }),
   }),
 });
 
 export const {
   useGetClientsQuery,
-  useGetReportsQuery,
-  useGetTasksQuery,
   useAddClientMutation,
-  useRemoveClientMutation
+  useRemoveClientMutation,
+  useGetReportsQuery,
+  useAddReportMutation,
+  useRemoveReportMutation,
+  useGetTasksQuery,
+  useAddTaskMutation,
+  useRemoveTaskMutation,
 } = jsonServerApi;

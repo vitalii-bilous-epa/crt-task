@@ -21,9 +21,7 @@ function App() {
     }));
   }, [data]);
 
-  const [createUser, result] = useAddClientMutation();
-
-  console.log(">>> result: ", result);
+  const [createUser] = useAddClientMutation();
 
   return (
     <div className="flex flex-col max-w-lg m-auto">

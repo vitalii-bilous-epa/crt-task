@@ -1,5 +1,15 @@
-import { v4 as uuidv4 } from 'uuid';
+import { v1 as uuid } from "uuid";
+
+const getGeneratedName = () => uuid().split('-')[0]
 
 export const generateClient = () => {
-  return `Client ${uuidv4()}`
-}
+  return `Client ${getGeneratedName()}`;
+};
+
+export const generateReport = () => {
+  return `Report ${getGeneratedName()}`;
+};
+
+export const generateTask = () => {
+  return `Task ${getGeneratedName()}`;
+};

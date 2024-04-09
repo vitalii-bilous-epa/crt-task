@@ -7,7 +7,7 @@ export interface AccordeonTemplateProps {
   childType?: string;
   children: React.ReactNode;
   onToogle?: (state: boolean) => void
-  onAdd: () => void;
+  onAddNewChild: () => void;
   onDelete: () => void;
 }
 
@@ -15,7 +15,7 @@ export const CustomAccordeon = ({
   title,
   childType,
   onToogle,
-  onAdd,
+  onAddNewChild: onAdd,
   onDelete,
   children,
 }: AccordeonTemplateProps) => {
