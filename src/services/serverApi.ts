@@ -5,13 +5,14 @@ export const jsonServerApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/" }),
   endpoints: (builder) => ({
     getClients: builder.query({
-      query: (page = 1) => `clients?_page=${page}&_limit=10`,
+      query: () => `clients`,
     }),
     getReports: builder.query({
-      query: (page = 1) => `reports?_page=${page}&_limit=10`,
+      query: (clientId: string) => `reports?clientId=${clientId}`,
+      
     }),
     getTasks: builder.query({
-      query: (page = 1) => `tasks?_page=${page}&_limit=10`,
+      query: (reportId: string) => `tasks?reportId=${reportId}`,
     }),
   }),
 });

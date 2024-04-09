@@ -1,7 +1,7 @@
 import { Accordion } from "flowbite-react/components/Accordion";
 import { FancyButton } from "./common/FancyButton";
 
-interface AccordeonListProps {
+export interface AccordeonListProps {
   title: string;
   type: string;
   childType?: string;
@@ -35,7 +35,7 @@ export const AccordeonList = ({
             <span>{title}</span>
             <FancyButton
               title={`Add ${childType}`}
-              onClick={() => onDelete(title, type)}
+              onClick={() => onAdd(title, type)}
             />
           </div>
           {list?.map((el) => {

@@ -1,10 +1,26 @@
 // import { AccordeonList } from "./AccordeonList";
-import { AccordeonList } from "./AccordeonList";
+import { useMemo } from "react";
 import { FancyButton } from "./common/FancyButton";
-import { getDataTree } from "./model";
+// import { getDataTree } from "./model";
+import { ClientWrapper } from "./wrappers/ClientWrapper";
+import { useGetClientsQuery } from "./services/serverApi";
+
+interface ServerReport {
+  id: string;
+  name: string;
+}
 
 function App() {
-  const data = getDataTree();
+  // const data = getDataTree();
+  const { data = [] } = useGetClientsQuery("");
+  const processedData = useMemo(() => {
+    return (data as ServerReport[]).map(({ id, name }) => ({
+      id,
+      title: name,
+    }));
+  }, [data]);
+
+  console.log(">>> app:", data, processedData);
 
   return (
     <div className="flex flex-col max-w-lg m-auto">
@@ -18,7 +34,8 @@ function App() {
       </div>
       <div>
         <div>
-          {data.list.map(({ list, title, childType, type }) => {
+          {/* Old variNT */}
+          {/* {data.list.map(({ list, title, childType, type }) => {
             return (
               <AccordeonList
                 key={title}
@@ -30,7 +47,10 @@ function App() {
                 onDelete={() => {}}
               />
             );
-          })}
+          })} */}
+          {processedData.map(({ id, title }) => (
+            <ClientWrapper id={id} title={title} />
+          ))}
         </div>
       </div>
     </div>
