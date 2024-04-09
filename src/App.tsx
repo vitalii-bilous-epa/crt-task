@@ -5,6 +5,7 @@ import { FancyButton } from "./common/FancyButton";
 import { ClientWrapper } from "./wrappers/ClientWrapper";
 import { useAddClientMutation, useGetClientsQuery } from "./services/serverApi";
 import { generateClient } from "./utils/generators";
+import { Loading } from "./common/Loading";
 
 interface ServerReport {
   id: string;
@@ -13,7 +14,7 @@ interface ServerReport {
 
 function App() {
   // const data = getDataTree();
-  const { data = [] } = useGetClientsQuery("");
+  const { data = [], isFetching } = useGetClientsQuery("");
   const [clientFilter, setClientNameFilter] = useState("");
   const processedData = useMemo(() => {
     const rawProcessedData = (data as ServerReport[]).map(({ id, name }) => ({
@@ -67,6 +68,7 @@ function App() {
           {processedData.map(({ id, title }) => (
             <ClientWrapper id={id} title={title} />
           ))}
+          {isFetching && <Loading />}
         </div>
       </div>
     </div>
