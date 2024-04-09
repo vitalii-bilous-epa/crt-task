@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useGetReportsQuery } from "../services/serverApi";
+import { useGetReportsQuery, useRemoveClientMutation } from "../services/serverApi";
 import { ReportWrapper } from "./ReportWrapper";
 import { CustomAccordeon } from "../common/CustomAccordeon";
 
@@ -14,6 +14,7 @@ export const ClientWrapper = ({ id, title }: { id: string; title: string }) => {
   const { data = [] } = useGetReportsQuery(id, {
     skip: isPereventLoading,
   });
+  const [removeUser] = useRemoveClientMutation()
   const processedData = useMemo(() => {
     return (data as ServerReport[]).map(({ id, name }) => ({
       id,
@@ -27,7 +28,7 @@ export const ClientWrapper = ({ id, title }: { id: string; title: string }) => {
       childType="report"
       onToogle={(isOpen) => setPereventLoading(!isOpen)}
       onAdd={() => {}}
-      onDelete={() => {}}
+      onDelete={() => removeUser(id)}
     >
       {processedData.map(({ id, title }) => (
         <ReportWrapper id={id} title={title} />
