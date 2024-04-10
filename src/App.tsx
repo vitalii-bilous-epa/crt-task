@@ -6,9 +6,13 @@ import { generateClient } from "./utils/generators";
 import { Loading } from "./common/Loading";
 import { ClientsServerResponse } from "./types";
 import { Error } from "./common/Error";
+import { DEF_POLLING_INTERVAL } from "./constatnts";
 
 function App() {
-  const { data = [], isFetching, isError, refetch } = useGetClientsQuery(null);
+  const { data = [], isFetching, isError, refetch } = useGetClientsQuery(null, {
+    pollingInterval: DEF_POLLING_INTERVAL,
+    skipPollingIfUnfocused: true,
+  });
   const [clientFilter, setClientNameFilter] = useState("");
   const processedData = useMemo(() => {
     const rawProcessedData = (data as ClientsServerResponse[]).map(({ id, name }) => ({

@@ -1,0 +1,1 @@
+export const DEF_POLLING_INTERVAL = 15 * 1000;
