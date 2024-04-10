@@ -1,6 +1,7 @@
 Clients-reports-tasks
 
-How to run project:
+How to run the project:
+
 0. Fresh:
   `yarn`
 1. Run client
