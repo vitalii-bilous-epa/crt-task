@@ -33,21 +33,23 @@ export const jsonServerApi = createApi({
       },
     }),
     addReport: builder.mutation({
-      query: ({ name, clientId }) => ({
+      query: ({ name, parentId }) => ({
         url: `reports`,
         method: "POST",
-        body: { name, clientId },
+        body: { name, clientId: parentId },
       }),
       invalidatesTags: (result, error, args) => {
-        return [{ type: "Reports", id: args.clientId }];
+        return [{ type: "Reports", id: args.parentId }];
       },
     }),
     removeReport: builder.mutation({
-      query: (id) => ({
+      query: ({ id }) => ({
         url: `reports/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Reports"],
+      invalidatesTags: (result, error, args) => {
+        return [{ type: "Reports", id: args.parentId }];
+      },
     }),
     // Tasks
     getTasks: builder.query({
@@ -57,21 +59,24 @@ export const jsonServerApi = createApi({
       },
     }),
     addTask: builder.mutation({
-      query: ({ name, reportId }) => ({
+      query: ({ name, parentId }) => ({
         url: `tasks`,
         method: "POST",
-        body: { name, reportId },
+        body: { name, reportId: parentId },
       }),
       invalidatesTags: (result, error, args) => {
-        return [{ type: "Tasks", id: args.reportId }];
+        return [{ type: "Tasks", id: args.parentId }];
       },
     }),
     removeTask: builder.mutation({
-      query: (id) => ({
+      query: ({ id }) => ({
         url: `tasks/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Tasks"],
+      // parentId
+      invalidatesTags: (result, error, args) => {
+        return [{ type: "Tasks", id: args.parentId }];
+      },
     }),
   }),
 });

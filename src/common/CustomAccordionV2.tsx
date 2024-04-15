@@ -1,24 +1,19 @@
 import { useEffect, useState } from "react";
-import { FancyButton } from "./FancyButton";
 import { CloseIcon } from "./CloseIcon";
 
-export interface AccordionTemplateProps {
+export interface CustomAccordionV2Props {
   title: string;
-  childType?: string;
   children: React.ReactNode;
   onToogle?: (state: boolean) => void;
-  onAddNewChild: () => void;
   onDelete: () => void;
 }
 
-export const CustomAccordion = ({
+export const CustomAccordionV2 = ({
   title,
-  childType,
   onToogle,
-  onAddNewChild,
   onDelete,
   children,
-}: AccordionTemplateProps) => {
+}: CustomAccordionV2Props) => {
   const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
@@ -49,15 +44,7 @@ export const CustomAccordion = ({
           ^
         </span>
       </div>
-      {isActive && (
-        <div className="p-4">
-          <div className="flex justify-between">
-            <span>{title}</span>
-            <FancyButton title={`Add ${childType}`} onClick={onAddNewChild} />
-          </div>
-          {children}
-        </div>
-      )}
+      {isActive && children}
     </div>
   );
 };
